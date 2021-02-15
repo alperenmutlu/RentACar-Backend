@@ -31,6 +31,7 @@ namespace DataAccess.Concrete.EntityFramework.Repository
                                  Description = c.Description,
                                  ColorName = co.ColorName,
                                  DailyPrice = c.DailyPrice,
+                                 ModelYear = c.ModelYear,
                              };
                 return result.ToList();
 
