@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Core.DataAccess.EntityFramework
 {
-    public class EfEntityRepositoryBase<TEntity, TContext> : ICarRepository<TEntity>
+    public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEntity>
         where TEntity : class, IEntity, new()
         where TContext : DbContext, new()
 
@@ -18,8 +18,8 @@ namespace Core.DataAccess.EntityFramework
         {
             using (TContext context = new TContext())
             {
-                var addedCar = context.Entry(entity);
-                addedCar.State = EntityState.Added;
+                var addedEntity = context.Entry(entity);
+                addedEntity.State = EntityState.Added;
                 context.SaveChanges();
             }
         }
@@ -28,8 +28,8 @@ namespace Core.DataAccess.EntityFramework
         {
             using (TContext context = new TContext())
             {
-                var deletedCar = context.Entry(entity);
-                deletedCar.State = EntityState.Deleted;
+                var deletedEntity = context.Entry(entity);
+                deletedEntity.State = EntityState.Deleted;
                 context.SaveChanges();
             }
         }
@@ -57,8 +57,8 @@ namespace Core.DataAccess.EntityFramework
         {
             using (TContext context = new TContext())
             {
-                var updatedCar = context.Entry(entity);
-                updatedCar.State = EntityState.Modified;
+                var updatedEntity = context.Entry(entity);
+                updatedEntity.State = EntityState.Modified;
                 context.SaveChanges();
             }
         }

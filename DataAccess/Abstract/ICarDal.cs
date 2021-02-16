@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Core.DataAccess
 {
-    public interface ICarDal:ICarRepository<Car>
+    public interface ICarDal:IEntityRepository<Car>
     {
         List<CarDetailDto> GetCarDetails();
     }
