@@ -22,11 +22,12 @@ namespace Business.Concrete
 
         public IResult Add(Rental rental)
         {
-            //var result = _rentalDal.Get(r => r.RentalId == rental.RentalId && r.ReturnDate == null);
-            //if(result.ReturnDate == null)
-            //{
-            //    return new ErrorResult(Messages.RentalCouldNotAdded);
-            //}
+            var result = _rentalDal.GetAll(r => r.RentalId == rental.RentalId && r.ReturnDate == null);
+
+            if (result.Count > 0)
+            {
+                return new ErrorResult(Messages.RentalCouldNotAdded);
+            }
             _rentalDal.Add(rental);
             return new SuccessResult(Messages.RentAlAdded);
         }
