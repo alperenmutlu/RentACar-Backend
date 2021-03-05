@@ -1,4 +1,5 @@
 ﻿using Business.Concrete;
+using Core.Entities.Concrete;
 using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.EntityFramework.Repository;
 using DataAccess.Concrete.InMemory;
@@ -183,8 +184,6 @@ namespace ConsoleUI
                 FirstName = userNameForAdd,
                 LastName = userSurnameForAdd,
                 Email = userEmailForAdd,
-                Password = userPasswordForAdd
-
             };
             userManager.Add(userForAdd);
         }
@@ -216,10 +215,10 @@ namespace ConsoleUI
 
         private static void GetAllUserList(UserManager userManager)
         {
-            Console.WriteLine("Kullanıcı Listesi: \nId\tFirst Name\tLast Name\tEmail\t\t\tPassword");
+            Console.WriteLine("Kullanıcı Listesi: \nId\tFirst Name\tLast Name\tEmail\t\t");
             foreach (var user in userManager.GetAll().Data)
             {
-                Console.WriteLine($"{user.UserId}\t{user.FirstName}\t{user.LastName}\t{user.Email}\t{user.Password}");
+                Console.WriteLine($"{user.UserId}\t{user.FirstName}\t{user.LastName}\t{user.Email}");
             }
         }
 
