@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 
-namespace DataAccess.Concrete.EntityFramework.Repository
+namespace DataAccess.Concrete.EntityFramework
 {
     public class EfRentalDal : EfEntityRepositoryBase<Rental, RentACarDbContext>, IRentalDal
     {
@@ -16,25 +16,26 @@ namespace DataAccess.Concrete.EntityFramework.Repository
         {
             using (RentACarDbContext context = new RentACarDbContext())
             {
-                var result = from c in context.Cars
-                             join r in context.Rentals
-                             on c.CarId equals r.CarId
-                             join b in context.Brands
-                             on c.BrandId equals b.BrandId
-                             join cu in context.Customers
-                             on r.CustomerId equals cu.CustomerId
-                             join u in context.Users
-                             on cu.CustomerId equals u.UserId
+                var result = from rental in context.Rentals
+                             join car in context.Cars
+                             on rental.CarId equals car.CarId
+                             join customer in context.Customers
+                             on rental.CustomerId equals customer.CustomerId
+                             join user in context.Users
+                             on customer.UserId equals user.UserId
+                             join brand in context.Brands
+                             on car.BrandId equals brand.BrandId
+
                              select new RentalDetailDto
                              {
-                                 RentalId = r.RentalId,
-                                 CarName = b.BrandName,
-                                 UserName = u.FirstName + " " + u.LastName,
-                                 CustomerName = cu.CustomerName,
-                                 RentDate = r.RentDate,
-                                 ReturnDate = r.ReturnDate
+                                 RentalId = rental.RentalId,
+                                 BrandName = brand.BrandName,
+                                 CustomerName = user.FirstName + " " + user.LastName,
+                                 RentDate = rental.RentDate,
+                                 ReturnDate = rental.ReturnDate
                              };
                 return result.ToList();
+
             }
         }
     }

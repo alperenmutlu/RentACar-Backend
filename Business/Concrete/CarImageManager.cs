@@ -69,10 +69,10 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll());
         }
 
-        //[ValidationAspect(typeof(CarImageValidator))]
+        [ValidationAspect(typeof(CarImageValidator))]
         public IDataResult<List<CarImage>> GetImagesByCarId(int id)
         {
-            return new SuccessDataResult<List<CarImage>>(CheckIfCarImageNull(id));
+            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll().Where(c=> c.CarId == id).ToList());
         }
 
         //business rules
@@ -86,16 +86,27 @@ namespace Business.Concrete
 
             return new SuccessResult();
         }
-        private List<CarImage> CheckIfCarImageNull(int id)
-        {
-            string path = @"\Images\default.png";
-            var result = _carImageDal.GetAll(c => c.CarId == id).Any();
-            if (!result)
-            {
-                return new List<CarImage> { new CarImage { CarId = id, ImagePath = path, Date = DateTime.Now } };
-            }
-            return _carImageDal.GetAll(p => p.CarId == id);
-        }
+        //private List<CarImage> CheckIfCarImageNull(int id)
+        //{
+        //    string path = @"\Images\default.png";
+        //    var result = _carImageDal.GetAll(c => c.CarId == id).Any();
+        //    if (!result)
+        //    {
+        //        return new List<CarImage> { new CarImage { CarId = id, ImagePath = path, Date = DateTime.Now } };
+        //    }
+        //    return _carImageDal.GetAll(p => p.CarId == id);
+
+
+        //}
+
+        //private IResult CheckIfImageIsExists(int Id)
+        //{
+        //    if (!_carImageDal.GetAll().Any(x => x.ID == Id))
+        //    {
+        //        return new ErrorResult(Messages.NotExist + "image");
+        //    }
+        //    return new SuccessResult();
+        //}
 
     }
 }
