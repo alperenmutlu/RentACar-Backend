@@ -8,7 +8,8 @@ using System.Text;
 
 namespace DataAccess.Concrete.EntityFramework.Repository
 {
-    public class EfFakeCardDal : EfEntityRepositoryBase<FakeCard, RentACarDbContext>, IFakeCardDal
+    public class EfCreditCardDal : EfEntityRepositoryBase<CreditCard, RentACarDbContext>, ICreditCardDal
     {
+
     }
 }

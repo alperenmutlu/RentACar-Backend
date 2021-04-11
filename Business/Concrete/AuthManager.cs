@@ -3,15 +3,18 @@ using Business.Constants;
 using Core.Entities.Concrete;
 using Core.Utilities.Results;
 using Core.Utilities.Security.Hashing;
-using Core.Utilities.Security.JWT;
+using Core.Utilities.Security.Jwt;
 using Entities.DTOs;
 
 namespace Business.Concrete
 {
     public class AuthManager : IAuthService
     {
-        private IUserService _userService;
-        private ITokenHelper _tokenHelper;
+
+
+        private readonly IUserService _userService;
+        private readonly ITokenHelper _tokenHelper;
+
 
         public AuthManager(IUserService userService, ITokenHelper tokenHelper)
         {
@@ -19,10 +22,42 @@ namespace Business.Concrete
             _tokenHelper = tokenHelper;
         }
 
-        public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
+
+        public IDataResult<AccessToken> CreateAccessToken(User user)
         {
-            byte[] passwordHash, passwordSalt;
-            HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
+            var claims = _userService.GetClaims(user);
+
+            var accessToken = _tokenHelper.CreateToken(user, claims.Data);
+
+            return new SuccessDataResult<AccessToken>(accessToken, Messages.TokenCreated);
+        }
+
+
+        public IDataResult<User> Login(UserForLoginDto userForLoginDto)
+        {
+            var userToCheck = _userService.GetByEmail(userForLoginDto.Email);
+
+            if (userToCheck.Data == null)
+            {
+                return new ErrorDataResult<User>(Messages.UserNotFound);
+            }
+
+            if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password,
+                                                  userToCheck.Data.PasswordHash,
+                                                  userToCheck.Data.PasswordSalt))
+            {
+                return new ErrorDataResult<User>(Messages.WrongPassword);
+            }
+
+            return new SuccessDataResult<User>(userToCheck.Data, Messages.LoginSuccessful);
+        }
+
+
+        public IDataResult<User> Register(UserForRegisterDto userForRegisterDto)
+        {
+            HashingHelper.CreatePasswordHash(userForRegisterDto.Password,
+                                             out byte[] passwordHash,
+                                             out byte[] passwordSalt);
             var user = new User
             {
                 Email = userForRegisterDto.Email,
@@ -32,41 +67,46 @@ namespace Business.Concrete
                 PasswordSalt = passwordSalt,
                 Status = true
             };
+
             _userService.Add(user);
-            return new SuccessDataResult<User>(user, Messages.UserRegistered);
+
+            return new SuccessDataResult<User>(user, Messages.Registered);
         }
 
-        public IDataResult<User> Login(UserForLoginDto userForLoginDto)
-        {
-            var userToCheck = _userService.GetByMail(userForLoginDto.Email);
-            if (userToCheck == null)
-            {
-                return new ErrorDataResult<User>(Messages.UserNotFound);
-            }
-
-            if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.PasswordHash, userToCheck.PasswordSalt))
-            {
-                return new ErrorDataResult<User>(Messages.PasswordError);
-            }
-
-            return new SuccessDataResult<User>(userToCheck, Messages.SuccessfullLogin);
-        }
 
         public IResult UserExists(string email)
         {
-            if (_userService.GetByMail(email) != null)
+            if (_userService.GetByEmail(email).Data != null)
             {
                 return new ErrorResult(Messages.UserAlreadyExists);
             }
             return new SuccessResult();
         }
 
-        public IDataResult<AccessToken> CreateAccessToken(User user)
-        {
-            var claims = _userService.GetClaims(user);
-            var accessToken = _tokenHelper.CreateToken(user, claims);
-            return new SuccessDataResult<AccessToken>(accessToken, Messages.AccessTokenCreated);
-        }
-    }
 
+        public IResult ChangePassword(UserForChangingPasswordDto userForChangingPasswordDto)
+        {
+            User userInfos = _userService.GetById(userForChangingPasswordDto.Id).Data;
+
+            if (!HashingHelper.VerifyPasswordHash(userForChangingPasswordDto.CurrentPassword,
+                                                  userInfos.PasswordHash,
+                                                  userInfos.PasswordSalt))
+            {
+                return new ErrorResult(Messages.CurrentPasswordIsWrong);
+            }
+
+            HashingHelper.CreatePasswordHash(userForChangingPasswordDto.NewPassword,
+                                             out byte[] passwordHash,
+                                             out byte[] passwordSalt);
+
+            userInfos.PasswordHash = passwordHash;
+            userInfos.PasswordSalt = passwordSalt;
+
+            _userService.Update(userInfos);
+
+            return new SuccessResult(Messages.PasswordUpdated);
+        }
+
+
+    }
 }
