@@ -5,7 +5,7 @@ RentACar -Backend
 Bu projec SOLID yazılım geliştirme prensiplerine uygun olarak geliştirilmiştir.
 
 ## Kullanılan Teknolojiler
-  ### Backend
+ ### Backend
 - C#
 - Restful WebApi
 - Katmanlı Mimari
