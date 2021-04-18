@@ -1,5 +1,3 @@
-# RentACar Project
-
 
 # Araba Kiralama Projesi
 Bu projec SOLID yazılım geliştirme prensiplerine uygun olarak geliştirilmiştir.
