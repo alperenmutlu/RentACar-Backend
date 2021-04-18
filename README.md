@@ -13,7 +13,7 @@ Bu projec SOLID yazılım geliştirme prensiplerine uygun olarak geliştirilmiş
 - Cache, Validate, Authorize Aspect
 - Autofac
 - Fluent Validation
-- Json Web Token
+- JSON Web Token
 
  ### Frontend
 - Angular 11
