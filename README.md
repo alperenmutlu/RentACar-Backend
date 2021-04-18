@@ -17,7 +17,7 @@ Bu projec SOLID yazılım geliştirme prensiplerine uygun olarak geliştirilmiş
 - Fluent Validation
 - Json Web Token
 
- ### Frontend
+  ### Frontend
 - Angular 11
 - Bootstrap 5.0
 - HttpClient Interceptor
