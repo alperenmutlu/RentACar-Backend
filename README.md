@@ -1,6 +1,6 @@
 
 # Araba Kiralama Projesi
-Bu projec SOLID yazılım geliştirme prensiplerine uygun olarak geliştirilmiştir.
+Bu proje SOLID yazılım geliştirme prensiplerine uygun olarak geliştirilmiştir.
 
 ## Kullanılan Teknolojiler
  ### Backend
