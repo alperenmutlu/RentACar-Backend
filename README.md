@@ -2,6 +2,7 @@
 RentACar -Backend
 
 # Araba Kiralama Projesi
+Bu projec SOLID yazılım geliştirme prensiplerine uyularak geliştirilmiştir.
 
 ## Kullanılan Teknolojiler
   ### Backend
@@ -24,3 +25,4 @@ RentACar -Backend
 - Özel Pipeler
 
 # Database Diyagram
+![databasediagram](https://user-images.githubusercontent.com/61757062/115145336-b68a9100-a059-11eb-9ec9-c12951d7d58e.png)
