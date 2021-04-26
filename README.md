@@ -1,12 +1,12 @@
 
-# Araba Kiralama Projesi
-Bu proje SOLID yazılım geliştirme prensiplerine uygun olarak geliştirilmiştir.
+# Rent A Car Project
+This project is in accordance with SOLID software development principles.
 
-## Kullanılan Teknolojiler
+## Used technologies
  ### Backend
 - C#
 - Restful WebApi
-- Katmanlı Mimari
+- N-Tier Architecture
 - Repository Design Pattern
 - Interceptor, Aspectler
 - Cross Cutting Concerns
