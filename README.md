@@ -8,7 +8,7 @@ This project is in accordance with SOLID software development principles.
 - Restful WebApi
 - N-Tier Architecture
 - Repository Design Pattern
-- Interceptor, Aspectler
+- Interceptor, Aspects
 - Cross Cutting Concerns
 - Cache, Validate, Authorize Aspect
 - Autofac
